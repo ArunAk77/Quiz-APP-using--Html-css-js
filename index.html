@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+      background-image: url(https://img.freepik.com/free-vector/puzzle-solving-question-mark-background-guidance-support_1017-43014.jpg?w=740&t=st=1722794080~exp=1722794680~hmac=0fcfed93ebefbcace20fe3f941c2f107845629bcc3210aa8ba616ed327c9d97b);
+      background-repeat: no-repeat;
+    background-size: cover
+    }
+
+.quiz-container {
+    backdrop-filter: blur(10px);
+    /* background: #fff; */
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+}
+.quiz-container:hover{
+    box-shadow: 2px 2px 10px black;
+    filter: drop-shadow(2px 2px 10px black );
+}
+
+#question-container {
+    margin-bottom: 20px;
+}
+.option {
+    display: block;
+    background-color: #e0e0e0;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px 0;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.option:hover {
+    box-shadow: -5px 5px 5px black;
+    transition:  all 0.5s;
+    background-color: #ccc;
+}
+
+#next-button {
+    background-color: rgb(207, 141, 152);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#next-button:hover {
+    background-color: #45a049;
+}
+
+#score-container {
+    margin-top: 20px;
+}
+
+</style>
+<body>
+    <div class="quiz-container">
+        <div id="question-container">
+            <span id="question-text"></span>
+        </div>
+        <div id="options-container"></div>
+        <button id="next-button">Next</button>
+        <div id="score-container">
+            <span id="score-text"></span>
+        </div>
+    </div>
+    <script>
+        // script.js
+
+const questions = [
+    {
+        question: "What is the capital of France?",
+        options: ["Berlin", "Madrid", "Paris", "Lisbon"],
+        answer: "Paris"
+    },
+    {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        answer: "4"
+    },
+    {
+        question: "What is 2 * 3?",
+        options: ["1", "0", "5", "6"],
+        answer: "6"
+    },
+    {
+        question: "What is CSS?",
+        options: ["Cascading style sheet", "control style  sheet", "contentsyle sheet", "Cstyle Sheet"],
+        answer: "Cascading style sheet  "
+    },
+    {
+        question: "What is the pillar of Java?",
+        options: ["JS", "Class", "Object", "OOPS"],
+        answer: "OOPS"
+    },
+    // Add more questions as needed
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+    showQuestion();
+    
+    document.getElementById('next-button').addEventListener('click', () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+        } else {
+            showScore();
+        }
+    });
+});
+
+function showQuestion() {
+    const question = questions[currentQuestionIndex];
+    document.getElementById('question-text').innerText = question.question;
+    
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+
+    question.options.forEach(option => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.innerText = option;
+        optionElement.addEventListener('click', () => selectOption(option));
+        optionsContainer.appendChild(optionElement);
+    });
+}
+
+function selectOption(selectedOption) {
+    const correctAnswer = questions[currentQuestionIndex].answer;
+    if (selectedOption === correctAnswer) {
+        score++;
+        document.getElementById('options-container').style.backgroundColor = 'lightgreen';
+    } else {
+        document.getElementById('options-container').style.backgroundColor = 'lightcoral';
+    }
+    setTimeout(() => {
+        document.getElementById('options-container').style.backgroundColor = '';
+        document.getElementById('next-button').disabled = false;
+    }, 1000);
+    
+    document.getElementById('next-button').disabled = true;
+}
+
+function showScore() {
+    document.getElementById('question-container').style.display = 'none';
+    document.getElementById('options-container').style.display = 'none';
+    document.getElementById('next-button').style.display = 'none';
+    
+    const scoreText = `Your score is ${score} out of ${questions.length}`;
+    document.getElementById('score-text').innerText = scoreText;
+}
+
+    </script>
+</body>
+</html>
